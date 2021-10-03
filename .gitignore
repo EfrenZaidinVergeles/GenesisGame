@@ -1,0 +1,5 @@
+# Exclude 68K cross-compilar
+asm68k.exe
+
+# Exclude compiled binary
+*.bin

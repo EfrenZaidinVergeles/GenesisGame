@@ -1,0 +1,1 @@
+..\mess236\mess genesis -debug -cart "..\GenesisGame\SYSTEM.BIN"
