@@ -3,3 +3,7 @@ asm68k.exe
 
 # Exclude compiled binary
 *.bin
+
+# Exclude symbols
+*.sym
+
