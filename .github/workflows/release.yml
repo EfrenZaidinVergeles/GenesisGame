@@ -1,0 +1,23 @@
+name: Compile Game
+on:
+  push:
+    branches: [master]
+
+jobs:
+  compile:
+    runs-on: windows-latest
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Download asm68k
+        shell: cmd
+        run: |
+          curl http://retrocdn.net/images/1/17/ASM68k.7z -L -o ASM68k.7z
+          7z e ASM68K.7z
+
+      - name: Compile with asm68k
+        shell: cmd
+        run: |
+          asm68k.exe /p /i /w /ov+ /oos+ /oop+ /oow+ /ooz+ /ooaq+ /oosq+ /oomq+ /ow+ GAME.S,GAME.BIN,GAME
