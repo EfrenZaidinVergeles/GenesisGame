@@ -40,6 +40,11 @@ Z80Reset:   MACRO
     MOVE.W #$0100, Z80BUSRES
     ENDM
 
+ClearRegisters: MACRO
+    MOVE.L $00000000, A0
+    MOVEM.L (A0), D0-D7/A1-A7
+    ENDM
+
 ; ******************************************************************
 ; Sega Initial Subroutines
 ; ******************************************************************
@@ -55,19 +60,19 @@ EntryPoint:
     JMP EntryPoint
 
 CLEARRAM:
-    move.l #0x00000000, d0     ; Place a 0 into d0, ready to copy to each longword of RAM
-    move.l #0x00000000, a0     ; Starting from address 0x0, clearing backwards
-    move.l #0x00003FFF, d1     ; Clearing 64k's worth of longwords (minus 1, for the loop to be correct)
+    MOVE.L $0000000, d0     ; Place a 0 into d0, ready to copy to each longword of RAM
+    MOVE.L $0000000, a0     ; Starting from address 0x0, clearing backwards
+    MOVE.L $0003FFF, d1     ; Clearing 64k's worth of longwords (minus 1, for the loop to be correct)
     @Clear:
-    move.l d0, -(a0)           ; Decrement the address by 1 longword, before moving the zero from d0 to it
-    dbra d1, @Clear            ; Decrement d0, repeat until depleted
+        MOVE.L d0, -(a0)           ; Decrement the address by 1 longword, before moving the zero from d0 to it
+        DBRA d1, @Clear            ; Decrement d0, repeat until depleted
 
 TMSS:
-    move.b 0x00A10001, d0      ; Move Megadrive hardware version to d0
-    andi.b #0x0F, d0           ; The version is stored in last four bits, so mask it with 0F
-    beq @Skip                  ; If version is equal to 0, skip TMSS signature
-    move.l #'SEGA', 0x00A14000 ; Move the string "SEGA" to 0xA14000
-    @Skip:
+    MOVE.B VERSION, d0      ; Move Megadrive hardware version to d0
+    ANDI.B #0x0F, d0           ; The version is stored in last four bits, so mask it with 0F
+    BEQ @Skip                  ; If version is equal to 0, skip TMSS signature
+    MOVE.L #'SEGA', 0x00A14000 ; Move the string "SEGA" to 0xA14000
+        @Skip:
 
 
 __end
